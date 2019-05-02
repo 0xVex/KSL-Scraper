@@ -70,7 +70,7 @@ class KSL:
                 self.scraped_cars.append({"Car": car_name, "Link": link})
 
     def save_cars(self):
-        sc = pd.DataFrame(self.scrape_cars())
+        sc = pd.DataFrame(self.scraped_cars)
         print('Your car search has been saved')
         sc.to_csv('KslCars.csv')
         self.driver.quit()
@@ -78,46 +78,12 @@ class KSL:
     def run(self):
 
         self.browse_ads()
-        while True:
-            print('Enter the car you want to search for')
-            self.keyword = input()
-            if not self.keyword:
-                break
-            self.search_cars()
-            self.scrape_cars()
+        print('Enter the car you want to search for')
+        self.keyword = input()
+        self.search_cars()
+        self.scrape_cars()
         self.save_cars()
 
 if __name__ ==  "__main__":
     search = KSL()
     search.run()
-
-
-
-
-
-
-
-
-   # miles = ['0', '1,000', '5,000', '10,000', '20,000', '30,000', '40,000', '50,000', '60,000', '70,000', '80,000',
-   #          '90,000', '100,000', '110,000', '120,000', '130,000', '140,000', '150,000', '160,000', '170,000',
-    #         '180,000', '190,000', '200,000', '1,000,000']
-   # price = ['$0', '$1000', '$2,000', '$3,000', '$4,000', '$5,000', '$6,000', '$7,000', '$8,000', '$9,000', '$10,000',
-    #         '$11,000', '$12,000', '$13,000', '$14,000', '$15,000', '$16,000', '$17,000', '$18,000', '$19,000',
-    #         '$20,000', '$21,000', '$22,000', '$23,000', '$24,000', '$25,000', '$26,000', '$27,000', '$28,000',
-    #         '$29,000', '$30,000', '$31,000', '$32,000', '$33,000', '$34,000', '$35,000', '$36,000', '$37,000',
-    #         '$38,000', '$39,000', '$40,000', '$41,000', '$42,000', '$43,000', '$44,000', '$45,000', '$46,000',
-    #         '$47,000', '$48,000', '$49,000', '$50,000', '$51,000', '$52,000', '$53,000', '$54,000', '$55,000',
-    #         '$56,000', '$57,000', '$58,000', '$59,000', '$60,000', '$61,000', '$62,000', '$63,000', '$64,000',
-    #         '$65,000', '$66,000', '$67,000', '$68,000', '$69,000', '$70,000', '$71,000']
-
-   # for desired_min_miles in miles:
-    #    if desired_min_miles == self.mileage_minimum:
-     #       print(desired_min_miles)
-     #       break
-    #    else:
-   #         print('sorry looks like you might have entered a mile value that was not recognized.')
-
-
-
-
-
