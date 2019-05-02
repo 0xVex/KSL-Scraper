@@ -14,7 +14,6 @@ class KSL:
         self.wait = WebDriverWait(self.driver, 10)
         self.url = 'https://www.ksl.com/auto/'
         self.scraped_cars = []
-       #print('Enter any search keywords')
         self.keyword = None
         print('What is your minimum mileage? (Please enter in increments of 10,000)')
         self.mileage_minimum = input()
@@ -36,17 +35,16 @@ class KSL:
     def search_cars(self):
 
         keyword_field = self.driver.find_element_by_name('keyword')
-        mileage_minimum = self.driver.find_element_by_id('searchFormMileageFrom')
-        mileage_maximum = self.driver.find_element_by_id('searchFormMileageTo')
-        price_minimum = self.driver.find_element_by_id('priceFrom')
-        price_maximum = self.driver.find_element_by_id('priceTo')
+        mileage_minimum_field = self.driver.find_element_by_id('searchFormMileageFrom')
+        mileage_maximum_field = self.driver.find_element_by_id('searchFormMileageTo')
+        price_minimum_field = self.driver.find_element_by_id('priceFrom')
+        price_maximum_field = self.driver.find_element_by_id('priceTo')
 
         keyword_field.send_keys(self.keyword)
-        #mileage_minimum.send_keys(mileage_minimum)
-        #mileage_minimum.send_keys(self.price_maximum)
-        #mileage_maximum.send_keys(mileage_maximum)
-        #price_minimum.send_keys('$' + price_minimum)
-        #price_maximum.send_keys('$' + price_maximum)
+        mileage_minimum_field.send_keys(self.mileage_minimum)
+        mileage_maximum_field.send_keys(self.mileage_maximum)
+        price_minimum_field.send_keys('$' + self.price_minimum)
+        price_maximum_field.send_keys('$' + self.price_maximum)
         keyword_field.send_keys(Keys.ENTER)
 
     def scrape_cars(self):
@@ -59,15 +57,16 @@ class KSL:
             for title in containers:
                 car_name = title.find_element_by_class_name('title').text
                 link = title.find_element_by_class_name('title').find_element_by_tag_name('a').get_attribute('href')
-                #price = title.find_element_by_class_name('listing-detail-line price').text
-                #mileage = title.find_element_by_class_name('listing-detail-line mileage').text
-                #seller_location = title.find_element_by_class_name('listing-detail-line').text
+                price = title.find_element_by_css_selector('.listing-detail-line.price').text
+                mileage = title.find_element_by_css_selector('.listing-detail-line.mileage').text
+                seller_location = title.find_elements_by_class_name('listing-detail-line')[2].text
                 print(car_name)
                 print(link)
-                #print(price)
-                #print(mileage)
-                #print(seller_location)
-                self.scraped_cars.append({"Car": car_name, "Link": link})
+                print(price)
+                print(mileage)
+                print(seller_location)
+                self.scraped_cars.append({"Car": car_name, "Link": link, "Price": price, "Mileage": mileage,
+                                          "Location": seller_location})
 
     def save_cars(self):
         sc = pd.DataFrame(self.scraped_cars)
